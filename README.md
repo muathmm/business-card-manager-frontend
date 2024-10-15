@@ -1,4 +1,20 @@
 # Business Cards Project
+## 🚀 Demo
+
+You can view the live demo of the **BusinessCardManager** application at the following link:
+
+[BusinessCardManager Demo](http://business-card-manager.vercel.app/list-cards)
+
+### Note on Compatibility
+Please be aware that due to an HTTPS compatibility issue, there may be limitations in the functionality of the application when making requests from the frontend to the backend server. This can affect features that rely on API calls. We are actively working to resolve this issue to enhance the overall user experience.
+
+Thank you for your understanding!
+
+## 🛠️ Deployment
+
+This application is deployed using **Vercel**. 
+
+[Vercel.com](https://vercel.com/)
 
 
 
