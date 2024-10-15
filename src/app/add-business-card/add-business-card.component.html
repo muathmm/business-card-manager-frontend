@@ -1,0 +1,100 @@
+<form [formGroup]="businessCardForm" (ngSubmit)="onSubmit()" class="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto mt-10 border border-gray-300 hover:shadow-2xl transition-shadow duration-300">
+    <h2 class="text-2xl font-bold mb-6 text-center text-white bg-gradient-to-r from-blue-500 to-purple-500 p-4 rounded-lg shadow-md">Add Business Card</h2>
+
+    <!-- Selection method (Radio buttons) -->
+
+<div class="mb-6">
+    <label class="block text-sm font-bold mb-2">Choose how to add the card:</label>
+    <div class="flex space-x-4">
+        <div class="flex items-center">
+            <input type="radio" formControlName="method" value="manual" id="manual" (change)="clearFormData()" class="mr-2 cursor-pointer" />
+            <label for="manual" class="text-sm font-semibold cursor-pointer hover:text-blue-500">Manual Entry</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" formControlName="method" value="file" id="file" (change)="clearFormData()" class="mr-2 cursor-pointer" />
+            <label for="file" class="text-sm font-semibold cursor-pointer hover:text-blue-500">Upload XML or CSV</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" formControlName="method" value="qr" id="qr" (change)="clearFormData()" class="mr-2 cursor-pointer" />
+            <label for="qr" class="text-sm font-semibold cursor-pointer hover:text-blue-500">Scan QR Code</label>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Manual data entry fields -->
+    <div *ngIf="businessCardForm.get('method')?.value === 'manual'" class="mb-4">
+        <label class="block text-sm font-bold mb-2">Manual Data Entry</label>
+        <div class="mb-4">
+            <input type="text" formControlName="Name" placeholder="Name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+            <input type="text" formControlName="Gender" placeholder="Gender" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+            <input 
+                type="date" 
+                formControlName="DateOfBirth" 
+                (change)="onDateChange($event)" 
+                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            />
+        </div>
+        <div class="mb-4">
+            <input type="email" formControlName="Email" placeholder="Email" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+            <input type="text" formControlName="Phone" placeholder="Phone" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+            <input type="text" formControlName="Address" placeholder="Address" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Upload Photo</label>
+            <input type="file" (change)="onFileSelected($event)" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+    </div>
+
+    <!-- File upload for XML or CSV -->
+    <div *ngIf="businessCardForm.get('method')?.value === 'file'" class="mb-4">
+        <label class="block text-sm font-bold mb-2" for="fileUpload">Upload XML or CSV</label>
+        <input id="fileUpload" type="file" (change)="onFileChange($event)" accept=".xml, .csv" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Drag-and-Drop file upload area -->
+    <div *ngIf="businessCardForm.get('method')?.value === 'file'" class="mb-4 border-dashed border-2 border-gray-300 p-4 rounded-lg text-center bg-gray-50" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
+        <p class="text-sm">Drag and drop your XML or CSV file here</p>
+    </div>
+
+    <!-- Preview of business card -->
+
+<div *ngIf="previewData" class="mb-6">
+    <p class="font-bold mb-2 text-lg text-center">Business Card Preview:</p>
+    <div class="border border-gray-300 p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg">
+        <img *ngIf="previewData.Photo" [src]="previewData.Photo" alt="Business Card Photo" class="w-32 h-32 rounded-full mx-auto mb-2 border-2 border-blue-500" />
+        <h3 class="text-lg font-semibold text-center text-blue-600">{{ previewData.Name }}</h3>
+        <p class="text-gray-600 text-center">{{ previewData.Gender }}</p>
+        <p class="text-gray-600 text-center">DOB: {{ previewData.DateOfBirth }}</p>
+        <p class="text-gray-600 text-center">{{ previewData.Email }}</p>
+        <p class="text-gray-600 text-center">{{ previewData.Phone }}</p>
+        <p class="text-gray-600 text-center">{{ previewData.Address }}</p>
+    </div>
+</div>
+
+
+    <!-- QR Code upload and scanner -->
+    <div *ngIf="businessCardForm.get('method')?.value === 'qr'" class="mb-4">
+        <label class="block text-sm font-bold mb-2" for="qrImage">Upload or Capture QR Code Image</label>
+        <input id="qrImage" type="file" (change)="onQRImageChange($event)" accept="image/*" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button type="button" (click)="openCamera()" class="w-full mt-4 p-2 border border-gray-300 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+            Open Camera
+        </button>
+        <div *ngIf="showScanner" class="mb-4">
+            <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+        </div>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" [disabled]="businessCardForm.invalid" class="bg-blue-500 text-white py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300">
+        Submit
+    </button>
+</form>

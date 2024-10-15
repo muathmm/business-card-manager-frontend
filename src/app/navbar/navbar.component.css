@@ -1,0 +1,26 @@
+nav {
+    background-color: #1f2937; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .nav-link {
+    color: #d1d5db; 
+    font-size: 1.25rem;
+    font-medium: 600; 
+    padding: 10px 15px; 
+    border-radius: 5px;
+    position: relative; 
+    transition: background-color 0.3s, color 0.3s, transform 0.3s; 
+  }
+  
+  .nav-link:hover {
+    color: rgb(15, 234, 12); 
+    background-color: rgba(255, 255, 255, 0.1); 
+    transform: translateY(-2px); 
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+  
