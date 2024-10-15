@@ -1,6 +1,6 @@
 # Business Cards Project
 
-![Logo](path/to/your/icon.png)
+
 
 ## Overview
 The Business Cards project is a web application designed to enable users to create and manage business cards effortlessly. Developed using the Angular framework, the application aims to simplify the sharing of professional information while providing a modern and user-friendly experience.
